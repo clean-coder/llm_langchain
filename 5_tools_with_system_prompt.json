@@ -1,0 +1,174 @@
+[[
+  {
+    "turn": 0,
+    "_comment": "System prompt",
+    "content": "You are a helpful travel assistant.\n\nIMPORTANT: When users ask about:\n- What to pack for a trip\n- What clothes to bring\n- Weather conditions\n- Temperature in a city\n\nYou MUST use the get_forecast tool to check the current weather before providing advice. Never give generic packing advice without checking the actual weather forecast first.",
+    "additional_kwargs": {},
+    "response_metadata": {}
+  },
+  {
+    "turn": 1,
+    "_comment": "User question",
+    "content": "What kind of clothes do I need for a short trip to Paris?",
+    "additional_kwargs": {},
+    "response_metadata": {}
+  },
+  {
+    "turn": 2,
+    "_comment": "Model deciding to use tool",
+    "content": "",
+    "additional_kwargs": {},
+    "response_metadata": {
+      "model": "llama3.1",
+      "created_at": "2026-01-16T15:21:28.910282Z",
+      "done": true,
+      "done_reason": "stop",
+      "total_duration": 839331125,
+      "load_duration": 102353583,
+      "prompt_eval_count": 256,
+      "prompt_eval_duration": 361103833,
+      "eval_count": 18,
+      "eval_duration": 267211375,
+      "logprobs": null,
+      "model_name": "llama3.1",
+      "model_provider": "ollama"
+    },
+    "id": "lc_run--019bc765-ad05-7d93-a127-cd6f02f43626-0",
+    "tool_calls": [
+      {
+        "name": "get_forecast",
+        "args": {"city": "Paris"},
+        "id": "8649a759-8a96-44ee-bd80-fd8c7e293bd7",
+        "type": "tool_call"
+      }
+    ],
+    "invalid_tool_calls": [],
+    "usage_metadata": {
+      "input_tokens": 256,
+      "output_tokens": 18,
+      "total_tokens": 274
+    }
+  },
+  {
+    "turn": 3,
+    "_comment": "Tool response with weather forecast",
+    "content": "Temperature: 18°C, Conditions: Partly cloudy, Wind: 10 km/h",
+    "tool_call_id": "8649a759-8a96-44ee-bd80-fd8c7e293bd7"
+  },
+  {
+    "turn": 4,
+    "_comment": "Model final response with packing advice",
+    "content": "Based on the current weather forecast for Paris, I would recommend packing layers for your trip. It's expected to be around 18°C with partly cloudy conditions and a gentle breeze.\n\nConsider bringing lightweight jackets or sweaters that can be easily added or removed as needed. You may also want to pack some warmer clothing, such as a light coat or cardigan, in case the temperature drops slightly during the evening hours.\n\nIn terms of specific items, consider packing:\n\n* 3-4 tops or shirts (lightweight and breathable)\n* 2-3 pairs of pants or trousers (comfortable and versatile)\n* 1-2 lightweight jackets or sweaters\n* A light coat or cardigan for cooler evenings\n* Undergarments and socks\n* Comfortable walking shoes or sneakers\n* Dressier outfit for evening events or dinners\n\nRemember to check the weather forecast again before your trip to ensure you're prepared for any changes in conditions. Enjoy Paris!",
+    "additional_kwargs": {},
+    "response_metadata": {
+      "model": "llama3.1",
+      "created_at": "2026-01-16T15:21:33.224738Z",
+      "done": true,
+      "done_reason": "stop",
+      "total_duration": 4311281291,
+      "load_duration": 67451041,
+      "prompt_eval_count": 173,
+      "prompt_eval_duration": 130698791,
+      "eval_count": 194,
+      "eval_duration": 3019835378,
+      "logprobs": null,
+      "model_name": "llama3.1",
+      "model_provider": "ollama"
+    },
+    "id": "lc_run--019bc765-b050-7573-b306-8dace3b7583c-0",
+    "tool_calls": [],
+    "invalid_tool_calls": [],
+    "usage_metadata": {
+      "input_tokens": 173,
+      "output_tokens": 194,
+      "total_tokens": 367
+    }
+  }
+],
+[
+  {
+    "turn": 0,
+    "_comment": "System prompt with instructions to use the get_forecast tool",
+    "content": "You are a helpful travel assistant.\n\nIMPORTANT: When users ask about:\n- What to pack for a trip\n- What clothes to bring\n- Weather conditions\n- Temperature in a city\n\nYou MUST use the get_forecast tool to check the current weather before providing advice. Never give generic packing advice without checking the actual weather forecast first.",
+    "additional_kwargs": {},
+    "response_metadata": {}
+  },
+  {
+    "turn": 1,
+    "_comment": "User question about packing for Stockholm",
+    "content": "Stockholm?",
+    "additional_kwargs": {},
+    "response_metadata": {}
+  },
+  {
+    "turn": 2,
+    "_comment": "Model deciding to use the get_forecast tool",
+    "content": "",
+    "additional_kwargs": {},
+    "response_metadata": {
+      "model": "llama3.1",
+      "created_at": "2026-01-16T15:31:38.797213Z",
+      "done": true,
+      "done_reason": "stop",
+      "total_duration": 681130750,
+      "load_duration": 63481500,
+      "prompt_eval_count": 248,
+      "prompt_eval_duration": 305814417,
+      "eval_count": 19,
+      "eval_duration": 310933041,
+      "logprobs": null,
+      "model_name": "llama3.1",
+      "model_provider": "ollama"
+    },
+    "id": "lc_run--019bc76e-fc03-79c2-a3fe-86abaab8f190-0",
+    "tool_calls": [
+      {
+        "name": "get_forecast",
+        "args": { "city": "Stockholm" },
+        "id": "55a9d771-043f-4bc8-b724-d105c457957e",
+        "type": "tool_call"
+      }
+    ],
+    "invalid_tool_calls": [],
+    "usage_metadata": {
+      "input_tokens": 248,
+      "output_tokens": 19,
+      "total_tokens": 267
+    }
+  },
+  {
+    "turn": 3,
+    "_comment": "Tool response with weather forecast for Stockholm",
+    "content": "Temperature: 12°C, Conditions: Rainy, Wind: 15 km/h",
+    "tool_call_id": "55a9d771-043f-4bc8-b724-d105c457957e"
+  },
+  {
+    "turn": 4,
+    "_comment": "Model final response with packing advice for Stockholm",
+    "content": "Considering the current weather in Stockholm, I would recommend packing:\n\n* A waterproof jacket or coat to keep you dry\n* Comfortable walking shoes with good grip for navigating rainy streets\n* Layers of breathable clothing (such as a fleece or sweater) to stay warm under your waterproof outer layer\n* A compact umbrella to protect yourself from the rain\n* A pair of gloves to keep your hands warm and dry\n\nAdditionally, considering the wind speed of 15 km/h, you may also want to pack:\n\n* A lightweight scarf to protect your neck from the wind\n* A hat or beanie to keep your head warm",
+    "additional_kwargs": {},
+    "response_metadata": {
+      "model": "llama3.1",
+      "created_at": "2026-01-16T15:31:41.335032Z",
+      "done": true,
+      "done_reason": "stop",
+      "total_duration": 2531998042,
+      "load_duration": 47239500,
+      "prompt_eval_count": 162,
+      "prompt_eval_duration": 140046166,
+      "eval_count": 125,
+      "eval_duration": 2343711584,
+      "logprobs": null,
+      "model_name": "llama3.1",
+      "model_provider": "ollama"
+    },
+    "id": "lc_run--019bc76e-feb0-7102-a8ea-19aba3293128-0",
+    "tool_calls": [],
+    "invalid_tool_calls": [],
+    "usage_metadata": {
+      "input_tokens": 162,
+      "output_tokens": 125,
+      "total_tokens": 287
+    }
+  }
+]]
