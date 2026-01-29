@@ -21,3 +21,8 @@ def print_token_usage(response: AIMessage) -> None:
     print(f"Completion Tokens: {response.response_metadata['token_usage']['completion_tokens']}")
     print(f"Total Tokens: {response.response_metadata['token_usage']['total_tokens']}")
     print()
+
+
+def write_data_to_file(data: str, filename: str) -> None:
+    with open(filename, 'w', encoding='utf-8') as file:
+        file.write(data)
