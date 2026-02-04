@@ -1,7 +1,11 @@
 import json
 from langchain_core.messages.ai import AIMessage
 
-def prettyfy_json(raw_json: str) -> str:
+
+def prettyfy_json(response: AIMessage) -> str:
+    # get raw json string from response
+    raw_json = _response_to_json(response)
+
     # load json string into a Python object
     data = json.loads(raw_json)
 
@@ -14,12 +18,14 @@ def prettyfy_json(raw_json: str) -> str:
         separators=(', ', ': ')   # pretty separators (comma+space, colon+space)
     )    
 
+def _response_to_json(response: AIMessage) -> str:
+    return response.model_dump_json()
+
 
 def print_token_usage(response: AIMessage) -> None:
-    print("\n---- Token Usage ----")
-    print(f"Prompt Tokens: {response.response_metadata['token_usage']['prompt_tokens']}")
-    print(f"Completion Tokens: {response.response_metadata['token_usage']['completion_tokens']}")
-    print(f"Total Tokens: {response.response_metadata['token_usage']['total_tokens']}")
+    print(f"Prompt Tokens    : {response.usage_metadata['input_tokens']}")
+    print(f"Completion Tokens: {response.usage_metadata['output_tokens']}")
+    print(f"Total Tokens     : {response.usage_metadata['total_tokens']}")        
     print()
 
 
