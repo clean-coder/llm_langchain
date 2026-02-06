@@ -9,17 +9,16 @@ chat_model = ChatOpenAI(
     verbose=True,    
 )
 
-template = "Give me a brief summary about the color {color}."
+template = "Give me the first {number} prime numbers."
 
 prompt = ChatPromptTemplate.from_template(template)
 
 output_parser = StrOutputParser()
 
 chain = prompt | chat_model | output_parser
-print(f'Type of Chain: {type(chain)}')
 
-response_as_string = chain.invoke({"color":"red"})
+response_as_string = chain.invoke({"number":5})
 
-print("\n---- Raw Output ----")
+print("\n---- Output as String ----")
 print(f'Type of response: {type(response_as_string)}')
 print(response_as_string)
