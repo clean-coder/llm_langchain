@@ -26,6 +26,9 @@ response_as_json = chain.invoke({
     "format_instructions": output_parser.get_format_instructions()
     })
 
+print("\n---Format Instructions ---: ")
+print(output_parser.get_format_instructions())
+
 print("\n---- Output as JSON ----")
 print(f'Type of response: {type(response_as_json)}')
 print(response_as_json)

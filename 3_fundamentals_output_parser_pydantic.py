@@ -53,4 +53,13 @@ inputs = {
     "library_count": 5
 }
 result: LibrariesOutput = chain.invoke(input=inputs)
+
+
+print("\n---Format Instructions ---: ")
+print(parser.get_format_instructions())
+print()
+
+print("\n---- Output as Pydantic Model ----")
+print(f'Type of response: {type(result)}')
+print("Data of Pydantic Model:")
 print_result(result)   

@@ -26,6 +26,9 @@ response_as_list = chain.invoke({
     "format_instructions": output_parser.get_format_instructions()
     })
 
+print("\n---Format Instructions ---: ")
+print(output_parser.get_format_instructions())
+
 print("\n---- Output as List ----")
 print(f'Type of response: {type(response_as_list)}')
 print(response_as_list)
