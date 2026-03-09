@@ -1,6 +1,5 @@
 from langchain_ollama import ChatOllama
 from langchain_core.messages import HumanMessage, AIMessage
-from langchain_core.language_models.chat_models import BaseChatModel
 
 
 """
@@ -41,25 +40,26 @@ chat_history = [
     AIMessage("Sweden is larger than France...")
 ]
 """
+MODEL = "llama3.1"
 class Conversation:
-    def __init__(self, llm: BaseChatModel):
-        self.llm = llm
+    def __init__(self):
         self.history = []
     
-    def ask(self, question: str):
+    def chat(self, question: str):
+        llm = ChatOllama(model=MODEL)
         self.history.append(HumanMessage(content=question))
-        response = self.llm.invoke(self.history)
+        response = llm.invoke(self.history)
         self.history.append(AIMessage(content=response.content))
         return response.content
 
 if __name__ == "__main__":
-    conv = Conversation(ChatOllama(model="llama3.1"))
+    conv = Conversation()
 
     print("---- First Question ----")
-    print(conv.ask("What is the capital of France?"))
+    print(conv.chat("What is the capital of France?"))
 
     print("\n\n---- Second Question ----")
-    print(conv.ask("And Sweden?"))
+    print(conv.chat("And Sweden?"))
 
     print("\n\n---- Third Question ----")
-    print(conv.ask("Which one is larger?"))
+    print(conv.chat("Which one is larger?"))
