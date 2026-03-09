@@ -1,10 +1,9 @@
 from langchain_ollama import ChatOllama
-from langchain_core.messages import HumanMessage, AIMessage
-from langchain_core.output_parsers import StrOutputParser
+from langchain_core.messages import BaseMessage, HumanMessage, AIMessage
 
 chat_history = []
 
-def chat(user_message, chat_history):
+def chat(user_message: str, chat_history: list[BaseMessage]) -> str:
     llm = ChatOllama(model="llama3.1")
     chat_history.append(HumanMessage(content=user_message))
     response = llm.invoke(chat_history)
