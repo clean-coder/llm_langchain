@@ -1,6 +1,5 @@
 from langchain_ollama import ChatOllama
 from langchain_core.messages import HumanMessage, ToolMessage
-from langchain_openai.chat_models.base import BaseChatOpenAI
 from langchain_core.tools import tool
 
 """
@@ -52,10 +51,10 @@ response = llm_with_tools.invoke(chat_history)
 USER: "What's the weather like in Paris?"
 LLM : thinks: "I should use the get_forecast tool"
 USER: executes Tool for the LLM by calling: get_forecast(city="Paris")
-      Result: "Temperature: 18°C, Conditions: Partly cloudy..."
+      Result: "Temperature: 28°C, Conditions: Sunny, Wind: 10 km/h"
       sends ToolMessage with result back to LLM
 LLM : gets the result and formulates a natural response
-USER: sees: "The weather in Paris is partly cloudy with a temperature of 18°C..."
+USER: sees: "The weather in Paris is sunny with a temperature of 28°C..."
 
 
 7. Problem: Warming up the tool usage
@@ -80,10 +79,10 @@ def get_forecast(city: str) -> str:
     """
 
     forecasts = {
-        "Paris": "Temperature: 18°C, Conditions: Partly cloudy, Wind: 10 km/h",
+        "Paris": "Temperature: 28°C, Conditions: Sunny, Wind: 10 km/h",
         "Stockholm": "Temperature: 12°C, Conditions: Rainy, Wind: 15 km/h",
-        "London": "Temperature: 15°C, Conditions: Foggy, Wind: 8 km/h",
-        "Berlin": "Temperature: 16°C, Conditions: Sunny, Wind: 12 km/h",
+        "London": "Temperature: 15°C, Conditions: Rain, Wind: 8 km/h",
+        "Berlin": "Temperature: 16°C, Conditions: Partly cloudy, Wind: 12 km/h",
         "Madrid": "Temperature: 24°C, Conditions: Clear skies, Wind: 5 km/h"
     }
     
@@ -91,11 +90,15 @@ def get_forecast(city: str) -> str:
     print(f'   weather forcast for {city}: {forecast}')
     return forecast
 
+MODEL = "llama3.1"
 
 # conversation history
 chat_history = []
     
-def chat_with_tools(llm_with_tools: BaseChatOpenAI, user_message: str) -> str:
+def chat_with_tools(user_message: str) -> str:
+    llm = ChatOllama(model=MODEL, temperature=0)
+    llm_with_tools = llm.bind_tools([get_forecast])
+    
     chat_history.append(HumanMessage(content=user_message))
     
     response = llm_with_tools.invoke(chat_history)
@@ -133,19 +136,14 @@ def _print_line():
     print("-" * 60) 
 
 if __name__ == "__main__":
-    model = "llama3.1"
-    llm = ChatOllama(model=model, temperature=0)
-    llm_with_tools = llm.bind_tools([get_forecast])
-
     question ='What kind of clothes do I need for a short trip to Paris?'
     print(f"\nUser: {question}")
 
     _print_line()
-    print("\nFirst attempt:")
-    response1 = chat_with_tools(llm_with_tools, question)
-    print(f"\nAI: {response1}\n")
+    print("\nFirst attempt: warming up the tool usage:")
+    chat_with_tools(question)
 
     _print_line()
-    print("\nSecond attempt (warming up the tool usage):")
-    response2 = chat_with_tools(llm_with_tools, question)
-    print(f"\nAI: {response2}\n")
+    print("\nSecond attempt:")
+    response = chat_with_tools(question)
+    print(f"\nAI: {response}\n")

@@ -1,6 +1,5 @@
 from langchain_ollama import ChatOllama
 from langchain_core.messages import HumanMessage, ToolMessage, SystemMessage
-from langchain_openai.chat_models.base import BaseChatOpenAI
 from langchain_core.messages.base import BaseMessage
 from langchain_core.tools import tool
 
@@ -15,10 +14,10 @@ def get_forecast(city: str) -> str:
         Weather forecast information as a string
     """
     forecasts = {
-        "Paris": "Temperature: 18°C, Conditions: Partly cloudy, Wind: 10 km/h",
+        "Paris": "Temperature: 28°C, Conditions: Sunny, Wind: 10 km/h",
         "Stockholm": "Temperature: 12°C, Conditions: Rainy, Wind: 15 km/h",
-        "London": "Temperature: 15°C, Conditions: Foggy, Wind: 8 km/h",
-        "Berlin": "Temperature: 16°C, Conditions: Sunny, Wind: 12 km/h",
+        "London": "Temperature: 15°C, Conditions: Rain, Wind: 8 km/h",
+        "Berlin": "Temperature: 16°C, Conditions: Partly cloudy, Wind: 12 km/h",
         "Madrid": "Temperature: 24°C, Conditions: Clear skies, Wind: 5 km/h"
     }
     
@@ -36,10 +35,17 @@ IMPORTANT: When users ask about:
 
 You MUST use the get_forecast tool to check the current weather before providing advice. Never give generic packing advice without checking the actual weather forecast first."""
 
+MODEL = "llama3.1"
+chat_history = []
 
-def chat_with_tools(llm_with_tools: BaseChatOpenAI, user_message: str, show_message_history: bool) -> str:   
+def chat_with_tools(user_message: str, system_prompt: str = SYSTEM_PROMPT, show_message_history: bool = False) -> str:   
+    llm = ChatOllama(model=MODEL, temperature=0)
+    llm_with_tools = llm.bind_tools([get_forecast])
+
     # add system prompt at the beginning of the conversation 
-    chat_history = [SystemMessage(content=SYSTEM_PROMPT)]
+    if system_prompt:
+        print(f"\n📢 Adding system prompt to conversation:\n{system_prompt}\n")
+        chat_history.append(SystemMessage(content=system_prompt))
 
     # add user message
     chat_history.append(HumanMessage(content=user_message))
@@ -90,12 +96,14 @@ def _print_message_history(chat_history: list[BaseMessage]):
 
 
 if __name__ == "__main__":
-    model = "llama3.1"
-    llm = ChatOllama(model=model)
-    llm_with_tools = llm.bind_tools([get_forecast])    
-
     question = 'What kind of clothes do I need for a short trip to Paris?'
     print(f"\nUser: {question}")
 
-    response = chat_with_tools(llm_with_tools, question, show_message_history=False)
+    response = chat_with_tools(question, show_message_history=False)
+    print(f"AI: {response}\n")  
+
+    question = 'And for London?'
+    print(f"\nUser: {question}")
+
+    response = chat_with_tools(question, system_prompt=None, show_message_history=False)
     print(f"AI: {response}\n")  
