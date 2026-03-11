@@ -1,18 +1,22 @@
 from langchain_ollama import ChatOllama
 from langchain_core.messages import HumanMessage, ToolMessage, SystemMessage
 from langchain_core.tools import tool
-from langchain_core.language_models.chat_models import BaseChatModel
 from langchain_core.messages import ToolCall
 
+MODEL = "llama3.1"
+
 class Conversation:
-    def __init__(self, llm: BaseChatModel, use_tools: bool = True, debug: bool = False):
+    def __init__(self, use_tools: bool = True, debug: bool = False):
         self.debug = debug
         self.chat_history = []
+
+        # plain llm without tools
+        self.llm = ChatOllama(model=MODEL, temperature=0) 
+        
+        # llm with tools and system prompt
         if use_tools:
-            self.llm = llm.bind_tools([get_forecast]) # llm with tools
+            self.llm = self.llm.bind_tools([get_forecast]) 
             self._set_system_prompt()
-        else:
-            self.llm = llm  # plain llm without tools
     
 
     def ask(self, user_message: str):
@@ -83,10 +87,10 @@ def get_forecast(city: str) -> str:
         Weather forecast information as a string
     """
     forecasts = {
-        "Paris": "Temperature: 18°C, Conditions: Partly cloudy, Wind: 10 km/h",
+        "Paris": "Temperature: 28°C, Conditions: Sunny, Wind: 10 km/h",
         "Stockholm": "Temperature: 12°C, Conditions: Rainy, Wind: 15 km/h",
-        "London": "Temperature: 15°C, Conditions: Foggy, Wind: 8 km/h",
-        "Berlin": "Temperature: 16°C, Conditions: Sunny, Wind: 12 km/h",
+        "London": "Temperature: 15°C, Conditions: Rain, Wind: 8 km/h",
+        "Berlin": "Temperature: 16°C, Conditions: Partly cloudy, Wind: 12 km/h",
         "Madrid": "Temperature: 24°C, Conditions: Clear skies, Wind: 5 km/h"
     }
     
@@ -94,19 +98,16 @@ def get_forecast(city: str) -> str:
 
 
 def chat_without_tools_example():
-    model = "llama3.1"
-    conv = Conversation(ChatOllama(model=model), use_tools=False)
-
     print("\n--- Chat without tools ---")
+    conv = Conversation(use_tools=False)
+
     print(conv.ask("What is the capital of France?"))
     print(conv.ask("And Sweden?"))
 
 
 def chat_with_tools_example():
-    model = "llama3.1"
-    conv = Conversation(ChatOllama(model=model), use_tools=True, debug=True)
-
     print("\n--- Chat with tools ---")
+    conv = Conversation(use_tools=True, debug=True)
 
     question = "\n> What kind of clothes do I need for a short trip to Paris?"
     print(question)
@@ -115,6 +116,7 @@ def chat_with_tools_example():
     question = "\n\n> And what about Stockholm?"
     print(question)
     print(f'\n\n{conv.ask(question)}')
+
 
 if __name__ == "__main__":
     chat_without_tools_example()

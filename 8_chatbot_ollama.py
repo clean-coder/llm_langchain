@@ -14,10 +14,10 @@ def get_forecast(city: str) -> str:
         Weather forecast information as a string
     """
     forecasts = {
-        "Paris": "Temperature: 18°C, Conditions: Partly cloudy, Wind: 10 km/h",
+        "Paris": "Temperature: 28°C, Conditions: Sunny, Wind: 10 km/h",
         "Stockholm": "Temperature: 12°C, Conditions: Rainy, Wind: 15 km/h",
-        "London": "Temperature: 15°C, Conditions: Foggy, Wind: 8 km/h",
-        "Berlin": "Temperature: 16°C, Conditions: Sunny, Wind: 12 km/h",
+        "London": "Temperature: 15°C, Conditions: Rain, Wind: 8 km/h",
+        "Berlin": "Temperature: 16°C, Conditions: Partly cloudy, Wind: 12 km/h",
         "Madrid": "Temperature: 24°C, Conditions: Clear skies, Wind: 5 km/h"
     }
     
@@ -36,11 +36,16 @@ IMPORTANT: When users ask about:
 You MUST use the get_forecast tool to check the current weather before providing advice. Never give generic packing advice without checking the actual weather forecast first."""
 
 
+MODEL = "llama3.1"
+
 # chat history with system prompt
 chat_history = [SystemMessage(content=SYSTEM_PROMPT)]
 
 # chat with tools supported
 def ask(user_message):
+    llm = ChatOllama(model=MODEL)
+    llm_with_tools = llm.bind_tools([get_forecast])
+
     # add user message
     chat_history.append(HumanMessage(content=user_message))
     
@@ -82,10 +87,6 @@ def _draw_line() -> None:
 
 
 if __name__ == "__main__":
-    MODEL = "llama3.1"
-    llm = ChatOllama(model=MODEL)
-    llm_with_tools = llm.bind_tools([get_forecast])
-
     _draw_line()
     question_1 = 'What kind of clothes do I need for a short trip to Paris?'
     print(f"\nUser: {question_1}")
