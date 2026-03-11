@@ -36,16 +36,13 @@ IMPORTANT: When users ask about:
 You MUST use the get_forecast tool to check the current weather before providing advice. Never give generic packing advice without checking the actual weather forecast first."""
 
 MODEL = "llama3.1"
-chat_history = []
 
-def chat_with_tools(user_message: str, system_prompt: str = SYSTEM_PROMPT, show_message_history: bool = False) -> str:   
+# chat history with system prompt
+chat_history = [SystemMessage(content=SYSTEM_PROMPT)]
+
+def chat_with_tools(user_message: str, show_message_history: bool = False) -> str:   
     llm = ChatOllama(model=MODEL, temperature=0)
     llm_with_tools = llm.bind_tools([get_forecast])
-
-    # add system prompt at the beginning of the conversation 
-    if system_prompt:
-        print(f"\n📢 Adding system prompt to conversation:\n{system_prompt}\n")
-        chat_history.append(SystemMessage(content=system_prompt))
 
     # add user message
     chat_history.append(HumanMessage(content=user_message))
@@ -105,5 +102,5 @@ if __name__ == "__main__":
     question = 'And for London?'
     print(f"\nUser: {question}")
 
-    response = chat_with_tools(question, system_prompt=None, show_message_history=False)
+    response = chat_with_tools(question, show_message_history=False)
     print(f"AI: {response}\n")  
